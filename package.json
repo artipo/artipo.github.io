@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "postinstall": "dotnet tool restore",
+    "build": "dotnet fable src --run webpack bundle",
     "start": "dotnet fable watch src --run webpack serve"
   },
   "dependencies": {
