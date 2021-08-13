@@ -10,31 +10,44 @@ open Elmish.React
 open Fable.React
 open Fable.React.Props
 
+open App.Views
+
 // MODEL
 
 type Model = int
 
 type Msg =
-| Increment
-| Decrement
+    | Increment
+    | Decrement
 
-let init() : Model = 0
+let init () : Model = 0
 
 // UPDATE
 
-let update (msg:Msg) (model:Model) =
+let update (msg: Msg) (model: Model) =
     match msg with
     | Increment -> model + 1
     | Decrement -> model - 1
 
 // VIEW (rendered with React)
 
-let view (model:Model) dispatch =
+let view (model: Model) dispatch =
 
-  div []
-      [ button [ OnClick (fun _ -> dispatch Increment) ] [ str "+" ]
-        div [] [ str (string model) ]
-        button [ OnClick (fun _ -> dispatch Decrement) ] [ str "-" ] ]
+    div [ Id "main-content"; Class "container" ] [
+        h2 [] [ str "Welcome!" ]
+        div [] [
+            button [ Class "btn"; OnClick(fun _ -> dispatch Increment) ] [
+                str "+"
+            ]
+            div [] [
+                h3 [] [ str (string model) ]
+            ]
+            button [ Class "btn"; OnClick(fun _ -> dispatch Decrement) ] [
+                str "-"
+            ]
+        ]
+    ]
+    |> baseView
 
 // App
 Program.mkSimple init update view
