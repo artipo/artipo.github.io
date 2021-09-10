@@ -1,8 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Home.fs" />
+    <Compile Include="About.fs" />
+    <Compile Include="App.Domain.fs" />
     <Compile Include="Views.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>

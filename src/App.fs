@@ -10,44 +10,33 @@ open Elmish.React
 open Fable.React
 open Fable.React.Props
 
-open App.Views
-
-// MODEL
-
-type Model = int
-
-type Msg =
-    | Increment
-    | Decrement
-
-let init () : Model = 0
+open App.Domain
 
 // UPDATE
-
-let update (msg: Msg) (model: Model) =
+let update (msg: Msg) (model: Model) : Model =
     match msg with
-    | Increment -> model + 1
-    | Decrement -> model - 1
+    | HomeMsg homeMsg ->
+        let updateHome = Home.update homeMsg model.Home
+        { model with Home = updateHome }
+    
+    | AboutMsg aboutMsg ->
+        let updateAbout = About.update aboutMsg model.About
+        { model with About = updateAbout }
+
+    | SwitchPage page -> { model with CurrentPage = page }
 
 // VIEW (rendered with React)
+let view (model: Model) (dispatch: Msg -> unit) =
 
-let view (model: Model) dispatch =
-
-    div [ Id "main-content"; Class "container" ] [
-        h2 [] [ str "Welcome!" ]
-        div [] [
-            button [ Class "btn"; OnClick(fun _ -> dispatch Increment) ] [
-                str "+"
-            ]
-            div [] [
-                h3 [] [ str (string model) ]
-            ]
-            button [ Class "btn"; OnClick(fun _ -> dispatch Decrement) ] [
-                str "-"
-            ]
-        ]
-    ]
-    |> baseView
+    match model.CurrentPage with
+        | Page.Home ->
+            Home.view model.Home (HomeMsg >> dispatch)
+            |> Views.homeView model dispatch
+        | _ ->
+            match model.CurrentPage with
+                | Page.About -> About.view model.About (AboutMsg >> dispatch)
+                | Page.Home -> div [] []
+            |> Views.baseView model dispatch
 
 // App
 Program.mkSimple init update view
