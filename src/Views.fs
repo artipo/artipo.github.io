@@ -8,38 +8,64 @@ open App.Domain
 
 let siteTitle = "Federico Rossi"
 
-let header (model: Model) (dispatch: Msg -> unit) =
-    nav [ Id "main-nav" ] [
-        div [ Class "header to_the_left" ] [
-            h3 [] [ str "My Site |> F#" ]
+let headerView (model: Model) (dispatch: Msg -> unit) =
+    header [ Class "header to_the_left" ] [
+        h3 [] [ str "My Site |> F#" ]
+        ul [ Class "list" ] [
+            li [] [
+                a [ OnClick(fun _ -> dispatch (SwitchPage Page.Home)) ] [
+                    str "Card"
+                ]
+            ]
+
+            li [] [
+                a [ if model.CurrentPage = Page.About then
+                        Class "selected"
+                    else
+                        OnClick(fun _ -> dispatch (SwitchPage Page.About)) ] [
+                    str "Inspect"
+                ]
+            ]
+
+            li [] [ a [] [ str "Tales" ] ]
+
+            li [] [ a [] [ str "Opinions" ] ]
+
+            li [] [ a [] [ str "Contact" ] ]
+        ]
+    ]
+
+let footerView (model: Model) (dispatch: Msg -> unit) =
+    footer [ Class "footer" ] [
+        div [] [
+            str "Social"
             ul [ Class "list" ] [
                 li [] [
-                    a [
-                        OnClick (fun _ -> dispatch (SwitchPage Page.Home))
-                    ] [
-                        str "Card"
+                    a [ Href "https://github.com/artipo" ] [
+                        img [ Class "social_icon"; Src "./imgs/Icons/github_logo_icon.png" ]
                     ]
                 ]
 
                 li [] [
-                    a [
-                        OnClick (fun _ -> dispatch (SwitchPage Page.About))
-                    ] [
-                        str "Inspect"
+                    a [ Href "https://www.linkedin.com/in/federico-rossi-b589701a2/" ] [
+                        img [ Class "social_icon"; Src "./imgs/Icons/linkedin_logo_icon.png" ]
+                    ]
+                ]
+
+                li [] [
+                    a [ Href "https://stackoverflow.com/users/12730306/federico-rossi" ] [
+                        img [ Class "social_icon"; Src "./imgs/Icons/stackoverflow_logo_icon.png" ]
                     ]
                 ]
             ]
         ]
     ]
 
-let footer (model: Model) (dispatch: Msg -> unit) =
-    div [] [ str "footer" ]
-
 let baseView (model: Model) (dispatch: Msg -> unit) content =
-    div [Class "container" ] [
-        header model dispatch
-        content
-        footer model dispatch
+    div [ Class "container min_size_to_screen base-container" ] [
+        headerView model dispatch
+        div [ Class "content" ] [ content ]
+        footerView model dispatch
     ]
 
 let homeView (model: Model) (dispatch: Msg -> unit) content =
@@ -49,38 +75,21 @@ let homeView (model: Model) (dispatch: Msg -> unit) content =
                 content
 
                 div [ Class "actions" ] [
-                    h3 [] [
-                        str "Actions"
-                    ]
+                    h3 [] [ str "Actions" ]
                     ul [ Class "list" ] [
                         li [] [
-                            a [
-                                OnClick (fun _ -> dispatch (SwitchPage Page.About))
-                            ] [
+                            a [ OnClick(fun _ -> dispatch (SwitchPage Page.About)) ] [
                                 str "Inspect"
                             ]
                         ]
 
-                        li [] [
-                            a [] [
-                                str "Tales"
-                            ]
-                        ]
+                        li [] [ a [] [ str "Tales" ] ]
 
-                        li [] [
-                            a [] [
-                                str "Opinions"
-                            ]
-                        ]
+                        li [] [ a [] [ str "Opinions" ] ]
 
-                        li [] [
-                            a [] [
-                                str "Contact"
-                            ]
-                        ]
+                        li [] [ a [] [ str "Contact" ] ]
                     ]
                 ]
             ]
         ]
     ]
-    

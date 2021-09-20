@@ -17,4 +17,10 @@ let update (msg: Msg) (model: Model): Model =
     model
 
 let view (model: Model) (dispatch: Msg -> unit) =
-    str "un sacco di cose diverse, sono un genio, poi mi sveglio!"
+    div [] [
+        h3 [] [ str "My life in coding" ]
+        p [] [ str "Hi, I'm a backend web developer based in Italy." ]
+        // br []
+        p [] [ str "I dwell in the .Net stack. After having mastered C# for 3+ years I'm slowly moving to F#." ]
+        p [] [ str "My love for clear and maintenable code reflects in the various projects I've worked on." ]
+    ]
