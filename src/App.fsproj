@@ -4,6 +4,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Styles.fs" />
     <Compile Include="Home.fs" />
     <Compile Include="About.fs" />
     <Compile Include="App.Domain.fs" />
@@ -11,7 +12,9 @@
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fable.Core" Version="3.2.3" />
+    <PackageReference Include="Fable.Core" Version="3.2.6" />
     <PackageReference Include="Fable.Elmish.React" Version="3.0.1" />
+    <PackageReference Include="Fss-lib" Version="2.0.5" />
+    <PackageReference Update="FSharp.Core" Version="5.0.1" />
   </ItemGroup>
 </Project>

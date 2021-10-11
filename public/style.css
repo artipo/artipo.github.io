@@ -113,11 +113,11 @@ p {
   align-items: flex-start;
 }
 
-.my_icon {
+/* .my_icon {
   width: 12rem;
   height: 12rem;
   margin-bottom: 6px;
-}
+} */
 
 .social_icon {
   width: 2rem;

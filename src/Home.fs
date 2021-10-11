@@ -18,7 +18,7 @@ let update (msg: Msg) (model: Model): Model =
 
 let view (model: Model) (dispatch: Msg -> unit) =
     div [ Class "char-card" ] [
-        img [ Class "my_icon"; Src "./imgs/my_icon.png" ]
+        img [ Styles.myIcon; Src "./imgs/my_icon.png" ]
         div [ Class "hsep" ] []
         p [] [ str "Federico Rossi" ]
         div [ Class "hsep" ] []
