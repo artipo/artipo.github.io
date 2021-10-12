@@ -4,6 +4,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="utilities.fs" />
     <Compile Include="Styles.fs" />
     <Compile Include="Home.fs" />
     <Compile Include="About.fs" />

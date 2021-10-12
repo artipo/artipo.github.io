@@ -5,89 +5,110 @@ open Fable.React
 open Fable.React.Props
 
 open App.Domain
+open App.utilities
 
 let siteTitle = "Federico Rossi"
 
 let headerView (model: Model) (dispatch: Msg -> unit) =
-    header [ Class "header to_the_left" ] [
+    header [ classes [ Styles.panel_theme
+                       Styles.flex_none
+                       Styles.flex_hor_container_start
+                       Styles.padding_base ] ] [
         h3 [] [ str "My Site |> F#" ]
-        ul [ Class "list" ] [
-            li [] [
-                a [ OnClick(fun _ -> dispatch (SwitchPage Page.Home)) ] [
-                    str "Card"
-                ]
-            ]
+        ul [ classes [ Styles.ul_hor
+                       Styles.margin_big_left ] ] [
 
-            li [] [
-                a [ if model.CurrentPage = Page.About then
-                        Class "selected"
-                    else
-                        OnClick(fun _ -> dispatch (SwitchPage Page.About)) ] [
-                    str "Inspect"
-                ]
-            ]
+            for title, page' in
+                [ "Card", Some Page.Home
+                  "Inspect", Some Page.About
+                  "Tales", None
+                  "Opinions", None
+                  "Contact", None ] do
 
-            li [] [ a [] [ str "Tales" ] ]
-
-            li [] [ a [] [ str "Opinions" ] ]
-
-            li [] [ a [] [ str "Contact" ] ]
+                match page' with
+                | Some page ->
+                    a [ classes [ Styles.a_button
+                                  if model.CurrentPage = page then
+                                      Styles.a_button_selected ]
+                        OnClick(fun _ -> dispatch (SwitchPage page)) ] [
+                        str title
+                    ]
+                | None ->
+                    a [ Class Styles.a_button ] [
+                        str title
+                    ]
         ]
     ]
 
 let footerView (model: Model) (dispatch: Msg -> unit) =
-    footer [ Class "footer" ] [
+    footer [ classes [ Styles.panel_theme
+                       Styles.flex_none
+                       Styles.textAlign_center
+                       Styles.padding_base ] ] [
         div [] [
             str "Social"
-            ul [ Class "list" ] [
-                li [] [
-                    a [ Href "https://github.com/artipo" ] [
-                        img [ Class "social_icon"; Src "./imgs/Icons/github_logo_icon.png" ]
+            ul [ classes [ Styles.ul_hor
+                           Styles.justifyContent_center ] ] [
+                for link, icon in
+                    [ "https://github.com/artipo", "./imgs/Icons/github_logo_icon.png"
+                      "https://www.linkedin.com/in/federico-rossi-b589701a2/", "./imgs/Icons/linkedin_logo_icon.png"
+                      "https://stackoverflow.com/users/12730306/federico-rossi", "./imgs/Icons/stackoverflow_logo_icon.png" ] do
+                    li [] [
+                        a [ Href link ] [
+                            img [ Class Styles.icon_social
+                                  Src icon ]
+                        ]
                     ]
-                ]
-
-                li [] [
-                    a [ Href "https://www.linkedin.com/in/federico-rossi-b589701a2/" ] [
-                        img [ Class "social_icon"; Src "./imgs/Icons/linkedin_logo_icon.png" ]
-                    ]
-                ]
-
-                li [] [
-                    a [ Href "https://stackoverflow.com/users/12730306/federico-rossi" ] [
-                        img [ Class "social_icon"; Src "./imgs/Icons/stackoverflow_logo_icon.png" ]
-                    ]
-                ]
             ]
         ]
     ]
 
 let baseView (model: Model) (dispatch: Msg -> unit) content =
-    div [ Class "container min_size_to_screen base-container" ] [
-        headerView model dispatch
-        div [ Class "content" ] [ content ]
-        footerView model dispatch
+    div [ Class Styles.page_theme ] [
+        div [ classes [ Styles.paginated
+                        Styles.flex_ver_container_start
+                        Styles.alignItems_stretch
+                        Styles.minHeight_as_viewport ] ] [
+            headerView model dispatch
+            div [ classes [ Styles.flex_auto
+                            Styles.padding_base ] ] [
+                content
+            ]
+            footerView model dispatch
+        ]
     ]
 
 let homeView (model: Model) (dispatch: Msg -> unit) content =
-    div [ Class "container size_to_screen" ] [
-        div [ Class "centered" ] [
-            div [ Class "h-flexer" ] [
+    div [ classes [ Styles.page_theme
+                    Styles.height_as_viewport ] ] [
+        div [ classes [ Styles.paginated
+                        Styles.centered_container ] ] [
+            div [ Class Styles.flex_hor_container_center ] [
                 content
 
-                div [ Class "actions" ] [
+                div [ classes [ Styles.flex_ver_container_center
+                                Styles.margin_big_left ] ] [
                     h3 [] [ str "Actions" ]
-                    ul [ Class "list" ] [
-                        li [] [
-                            a [ OnClick(fun _ -> dispatch (SwitchPage Page.About)) ] [
-                                str "Inspect"
-                            ]
-                        ]
+                    ul [ Class Styles.ul_ver ] [
 
-                        li [] [ a [] [ str "Tales" ] ]
+                        for title, page' in
+                            [ "Inspect", Some Page.About
+                              "Tales", None
+                              "Opinions", None
+                              "Contact", None ] do
 
-                        li [] [ a [] [ str "Opinions" ] ]
-
-                        li [] [ a [] [ str "Contact" ] ]
+                            match page' with
+                            | Some page ->
+                                a [ classes [ Styles.a_button
+                                              if model.CurrentPage = page then
+                                                  Styles.a_button_selected ]
+                                    OnClick(fun _ -> dispatch (SwitchPage page)) ] [
+                                    str title
+                                ]
+                            | None ->
+                                a [ Class Styles.a_button ] [
+                                    str title
+                                ]
                     ]
                 ]
             ]
