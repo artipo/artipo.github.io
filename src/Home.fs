@@ -15,14 +15,23 @@ let init () = { Model.a = 0 }
 
 let update (msg: Msg) (model: Model) : Model = model
 
-let view (model: Model) (dispatch: Msg -> unit) =
+let view (model: Model) (dispatch: Msg -> unit) (actions: ReactElement) =
     div [ classes [ Styles.portrait_card
                     Styles.flex_ver_container_start
                     Styles.alignItems_start ] ] [
         img [ Class Styles.portrait
               Src "./imgs/my_icon.png" ]
+        
         div [ Class Styles.separator_hor ] []
-        p [] [ str "Federico Rossi" ]
+        
+        div [ Class Styles.portrait_section ] [
+            p [] [ str "Federico Rossi" ]
+            p [] [ str "Desktop / Backend developer" ]
+        ]
+        
         div [ Class Styles.separator_hor ] []
-        p [] [ str "01/02/1994" ]
+        
+        div [ Class Styles.portrait_section ] [
+            actions
+        ]
     ]

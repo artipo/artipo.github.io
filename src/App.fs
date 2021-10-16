@@ -32,10 +32,8 @@ let view (model: Model) (dispatch: Msg -> unit) =
         | Page.Home ->
             Home.view model.Home (HomeMsg >> dispatch)
             |> Views.homeView model dispatch
-        | _ ->
-            match model.CurrentPage with
-                | Page.About -> About.view model.About (AboutMsg >> dispatch)
-                | Page.Home -> div [] []
+        | Page.About ->
+            About.view model.About (AboutMsg >> dispatch)
             |> Views.baseView model dispatch
 
 // App

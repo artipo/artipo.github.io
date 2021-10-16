@@ -7,36 +7,50 @@ open Fable.React.Props
 open App.Domain
 open App.utilities
 
-let siteTitle = "Federico Rossi"
+let siteTitle = "F.Rossi"
+Browser.Dom.document.title <- siteTitle
+
+let pages = [ "About", Some Page.About
+              "Projects", None
+              "Blog", None
+              "Contact", None ]
 
 let headerView (model: Model) (dispatch: Msg -> unit) =
     header [ classes [ Styles.panel_theme
                        Styles.flex_none
-                       Styles.flex_hor_container_start
                        Styles.padding_base ] ] [
-        h3 [] [ str "My Site |> F#" ]
-        ul [ classes [ Styles.ul_hor
-                       Styles.margin_big_left ] ] [
+        div [ classes [ Styles.paginated
+                        Styles.flex_hor_container_start ] ] [
+            a [ classes [ Styles.a_button
+                          Styles.home_button ]
+                OnClick(fun _ -> dispatch (SwitchPage Page.Home))
+            ] [
+                str siteTitle
+            ]
+            ul [ classes [ Styles.ul_hor
+                           Styles.margin_big_left ] ] [
 
-            for title, page' in
-                [ "Card", Some Page.Home
-                  "Inspect", Some Page.About
-                  "Tales", None
-                  "Opinions", None
-                  "Contact", None ] do
-
-                match page' with
-                | Some page ->
-                    a [ classes [ Styles.a_button
-                                  if model.CurrentPage = page then
-                                      Styles.a_button_selected ]
-                        OnClick(fun _ -> dispatch (SwitchPage page)) ] [
-                        str title
-                    ]
-                | None ->
-                    a [ Class Styles.a_button ] [
-                        str title
-                    ]
+                for title, page' in pages do
+                    match page' with
+                    | Some page ->
+                        li [ classes [ Styles.li_hor
+                                       Styles.header_button_hover_transitions ] ] [
+                            a [ classes [ Styles.a_button
+                                          if model.CurrentPage = page then
+                                              Styles.a_button_selected ]
+                                if model.CurrentPage <> page then
+                                    OnClick(fun _ -> dispatch (SwitchPage page)) ] [
+                                str title
+                            ]
+                        ]
+                    | None ->
+                        li [ classes [ Styles.li_hor
+                                       Styles.header_button_hover_transitions ] ] [
+                            a [ Class Styles.a_button ] [
+                                str title
+                            ]
+                        ]
+            ]
         ]
     ]
 
@@ -45,8 +59,7 @@ let footerView (model: Model) (dispatch: Msg -> unit) =
                        Styles.flex_none
                        Styles.textAlign_center
                        Styles.padding_base ] ] [
-        div [] [
-            str "Social"
+        div [ classes [ Styles.paginated ] ] [
             ul [ classes [ Styles.ul_hor
                            Styles.justifyContent_center ] ] [
                 for link, icon in
@@ -65,52 +78,47 @@ let footerView (model: Model) (dispatch: Msg -> unit) =
 
 let baseView (model: Model) (dispatch: Msg -> unit) content =
     div [ Class Styles.page_theme ] [
-        div [ classes [ Styles.paginated
-                        Styles.flex_ver_container_start
+        div [ classes [ Styles.flex_ver_container_start
                         Styles.alignItems_stretch
                         Styles.minHeight_as_viewport ] ] [
             headerView model dispatch
-            div [ classes [ Styles.flex_auto
-                            Styles.padding_base ] ] [
+            div [ classes [ Styles.paginated
+                            Styles.flex_auto ] ] [
                 content
             ]
             footerView model dispatch
         ]
     ]
 
-let homeView (model: Model) (dispatch: Msg -> unit) content =
+let homeView (model: Model) (dispatch: Msg -> unit) card =
     div [ classes [ Styles.page_theme
                     Styles.height_as_viewport ] ] [
         div [ classes [ Styles.paginated
                         Styles.centered_container ] ] [
             div [ Class Styles.flex_hor_container_center ] [
-                content
-
-                div [ classes [ Styles.flex_ver_container_center
-                                Styles.margin_big_left ] ] [
-                    h3 [] [ str "Actions" ]
-                    ul [ Class Styles.ul_ver ] [
-
-                        for title, page' in
-                            [ "Inspect", Some Page.About
-                              "Tales", None
-                              "Opinions", None
-                              "Contact", None ] do
-
-                            match page' with
-                            | Some page ->
-                                a [ classes [ Styles.a_button
-                                              if model.CurrentPage = page then
-                                                  Styles.a_button_selected ]
+                card
+                <| ul [ classes [ Styles.ul_ver
+                                  Styles.alignItems_start ] ] [
+                    for title, page' in pages do
+                        match page' with
+                        | Some page ->
+                            li [ classes [ Styles.li_ver
+                                           Styles.home_button_hover_transitions ] ] [
+                                a [ classes [ Styles.a_button ]
                                     OnClick(fun _ -> dispatch (SwitchPage page)) ] [
                                     str title
                                 ]
-                            | None ->
-                                a [ Class Styles.a_button ] [
+                            ]
+
+                        | None ->
+                            li [ classes [ Styles.li_ver
+                                           Styles.home_button_hover_transitions ] ] [
+                                a [ classes [ Styles.a_button
+                                              ] ] [
                                     str title
                                 ]
-                    ]
-                ]
+                            ]
+                   ]
             ]
         ]
     ]

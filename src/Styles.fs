@@ -4,30 +4,38 @@ module Styles
 open Fss
 open Fss.FssTypes
 
+open App.utilities
+open Fss.Utilities
+
 // colors
 let page_background_color = rgb 238 238 238
 let page_foreground_color = rgb 51 51 51
 let page_separator_color = rgb 153 153 153
+let page_portrait_background_color = rgb 245 245 245
+let page_portrait_shadow_color = rgb 211 211 211
 let panel_background_color = rgb 221 221 221
 let panel_foreground_color = rgb 51 51 51
 let panel_foreground_color_hovered = rgb 125 125 125
-let accent_color = rgb 249 149 80
+let accent_color = rgb 238 134 64
 let accent_foreground_color = rgb 51 51 51
 
 // sizes
 let private page_width = px 1100
+let private screen_width = vw 100.0
 let private screen_height = vh 100.0
-let private fill_height = pct 100
-let private fill_width = fill_height
+let private fill_width = pct 100
+let private fill_height = fill_width
 let private social_icon_size = rem 2.
 
 // paddings
 let private padding_base' = rem 1.
 let private padding_button_hor = rem 0.5
-let private padding_button_ver = rem 0.2
+let private padding_button_ver = rem 0.3
 let private padding_social_icon = rem 0.5
+let private padding_portrait = rem 1.5
 let private padding_portrait_card_hor = rem 1.
-let private padding_portrait_card_ver = rem 2.
+let private padding_portrait_card_ver = rem 1.5
+let private padding_portrait_section = rem 1.
 
 // margins
 let private margin_base' = rem 1.
@@ -42,10 +50,12 @@ let page_theme =
 let panel_theme =
     fss [ BackgroundColor' panel_background_color
           Color' panel_foreground_color
+          Width' screen_width
           Label' "_panel_theme" ]
 
 let paginated =
-    fss [ MaxWidth' page_width
+    fss [ Width' fill_width
+          MaxWidth' page_width
           Margin.auto
           Overflow.hidden
           Label' "_paginated" ]
@@ -123,6 +133,19 @@ let padding_base =
     fss [ Padding' padding_base'
           Label' "_padding_base" ]
 
+let padding_button =
+    fss
+    <| [ Label' "_padding_button" ]
+        @ padding_2 padding_button_hor padding_button_ver
+
+let padding_none_left =
+    fss [ PaddingLeft' (px 0)
+          Label' "_padding_none_left" ]
+
+let margin_auto =
+    fss [ Margin.auto
+          Label' "_margin_auto" ]
+
 let marging_base_left =
     fss [ MarginLeft' margin_base'
           Label' "_marging_base_left" ]
@@ -130,6 +153,10 @@ let marging_base_left =
 let margin_base_top =
     fss [ MarginTop' margin_base'
           Label' "_margin_base_top" ]
+
+let margin_base_bottom =
+    fss [ MarginBottom' margin_base'
+          Label' "_margin_base_bottom" ]
 
 let margin_big_left =
     fss [ MarginLeft' margin_big'
@@ -142,6 +169,10 @@ let margin_big_top =
 let textAlign_center =
     fss [ TextAlign.center
           Label' "_textAlign_center" ]
+    
+let textAlign_start =
+    fss [ TextAlign.start
+          Label' "_textAlign_start" ]
 
 // base classes
 let ul_hor = fss [ Display.flex; Label' "_ul_hor" ]
@@ -152,44 +183,94 @@ let ul_ver =
           Label' "_ul_ver" ]
 
 let a_button =
-    fss [ PaddingLeft' padding_button_hor
-          PaddingRight' padding_button_hor
-          PaddingTop' padding_button_ver
-          PaddingBottom' padding_button_ver
-          Cursor.pointer
-          Hover [ Color' panel_foreground_color_hovered ]
-          Label' "_a_button" ]
+    fss
+    <| [ TextAlign.center
+         Cursor.pointer
+         Label' "_a_button" ]
 
 let a_button_selected =
     fss [ Color' accent_color
           Label' "_a_button_selected" ]
 
+let home_button_hover_transitions =
+    fss [ TransitionProperty.values [ Property.Transform; Property.Color ]
+          TransitionDuration' (sec 0.35)
+          Hover [ Transforms [ Transform.translateX (px 10) ]
+                  Color' accent_color ]
+          Label' "_home_button_hover_transitions" ]
+
+let header_button_hover_transitions =
+    fss [ TransitionProperty.values [ Property.Color ]
+          TransitionDuration' (sec 0.35)
+          Hover [ Color' accent_color ]
+          Label' "_header_button_hover_transitions" ]
+
+let home_button =
+    fss [ FontWeight.bold
+          FontSize.larger
+          Label' "_home_button"]
+
+let li_ver =
+    fss
+    <| [ Label' "_li_ver" ]
+        @ margin_ver_1 padding_button_ver
+
+let li_hor =
+    fss
+    <| [ Label' "_li_hor" ]
+        @ margin_hor_1 padding_button_hor
+
+let with_arrow =
+    fss [ BackgroundImage.url "./imgs/Icons/arrow_turn_icon.png"
+          BackgroundPosition.values (Background.Position.Left, pct 75)
+          BackgroundRepeat.noRepeat
+          BackgroundSize' (px 20)
+          PaddingLeft' (px 25)
+          Label' "_with_arrow" ]
+
 let icon_social =
-    fss [ Width' social_icon_size
-          Height' social_icon_size
-          Cursor.pointer
-          Padding' padding_social_icon
-          Label' "_icon_social" ]
+    fss
+    <| [ Width' social_icon_size
+         Height' social_icon_size
+         Cursor.pointer
+         Label' "_icon_social" ]
+        @ margin_hor_1 padding_social_icon
 
 let portrait =
-    fss [ Width'(rem 12.0)
-          Height'(rem 12.0)
-          MarginBottom'(px 6)
-          Label' "_portrait" ]
+    fss
+    <| [ Width'(rem 12.0)
+         Height'(rem 12.0)
+         Margin.auto
+         Label' "_portrait" ]
+        @ padding_1 padding_portrait
 
 let portrait_card =
-    fss [ BorderWidth'(px 1)
-          BorderStyle.solid
-          BorderColor' page_separator_color
-          BorderRadius' (px 5)
-          PaddingLeft' padding_portrait_card_hor
-          PaddingRight' padding_portrait_card_hor
-          PaddingTop' padding_portrait_card_ver
-          PaddingBottom' padding_portrait_card_ver
-          Overflow.hidden
-          MinWidth' (rem 13.)
-          MinHeight' (rem 18.)
-          Label' "_portrait_card"]
+    fss
+    <| [ BackgroundColor' page_portrait_background_color
+         BoxShadows [ BoxShadow.blurColor (px 0, px 0, em 1., page_portrait_shadow_color) ]
+         Overflow.hidden
+         MinWidth'(rem 19.0)
+         MinHeight'(rem 18.0)
+         MaxWidth'(rem 20.0)
+         MaxHeight'(rem 40.0)
+         Label' "_portrait_card" ]
+        @ border_solid_3 (px 1) page_separator_color (px 5)
+        @ padding_2 padding_portrait_card_hor padding_portrait_card_ver
+
+let portrait_section =
+    fss
+    <| [ Label' "_portrait_section" ]
+        @ padding_1 padding_portrait_section
+
+let pipe_op =
+    fss [ Color' Color.mediumSeaGreen
+//          FontWeight.bold
+          Label' "_pipe_op" ]
+
+let love_op =
+    fss [ Color' Color.indianRed
+//          FontWeight.bold
+          Label' "_love_op" ]
 
 let separator_hor =
     fss [ Height'(px 1)
