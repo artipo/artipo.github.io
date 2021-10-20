@@ -9,11 +9,12 @@ open Fss.Utilities
 
 // colors
 let page_background_color = rgb 238 238 238
+let page_background_shadow_color = rgb 201 201 201
 let page_foreground_color = rgb 51 51 51
 let page_separator_color = rgb 153 153 153
 let page_portrait_background_color = rgb 245 245 245
 let page_portrait_shadow_color = rgb 211 211 211
-let panel_background_color = rgb 221 221 221
+let panel_background_color = rgba 0 0 0 0.1
 let panel_foreground_color = rgb 51 51 51
 let panel_foreground_color_hovered = rgb 125 125 125
 let accent_color = rgb 238 134 64
@@ -21,10 +22,13 @@ let accent_foreground_color = rgb 51 51 51
 
 // sizes
 let private page_width = px 1100
+let private blog_width = px 700
 let private screen_width = vw 100.0
 let private screen_height = vh 100.0
 let private fill_width = pct 100
 let private fill_height = fill_width
+let private sep_width = pct 80
+let private sep_height = sep_width
 let private social_icon_size = rem 2.
 
 // paddings
@@ -35,15 +39,26 @@ let private padding_social_icon = rem 0.5
 let private padding_portrait = rem 1.5
 let private padding_portrait_card_hor = rem 1.
 let private padding_portrait_card_ver = rem 1.5
-let private padding_portrait_section = rem 1.
+let private padding_portrait_section = rem 2.
 
 // margins
 let private margin_base' = rem 1.
 let private margin_big' = rem 3.
+let private margin_blog_hor = rem 1.
+let private margin_blog_ver = rem 4.
+
+// blank spaces
+let private blog_title_blank_space_height = rem 2.
+let private blog_subtitle_blank_space_height = rem 0.5
+
+// font sizes
+let private font_size_blog_title = rem 4.
+let private font_size_blog_subtitle = rem 1.5
 
 // infrastructure
 let page_theme =
-    fss [ BackgroundColor' page_background_color
+    fss [ // BackgroundColor' page_background_color
+          BackgroundImage.radialGradient(Image.Circle, Image.FarthestSide, pct 50, pct 50, [ page_background_color, pct 70; page_background_shadow_color, pct 100 ])
           Color' page_foreground_color
           Label' "_page_theme" ]
 
@@ -60,6 +75,16 @@ let paginated =
           Overflow.hidden
           Label' "_paginated" ]
 
+let blogged =
+    fss
+    <| [ Width' fill_width
+         MaxWidth' blog_width
+         MarginLeft.auto
+         MarginRight.auto
+         Overflow.hidden
+         Label' "_blogged" ]
+        @ margin_2 margin_blog_hor margin_blog_ver
+        
 let height_as_viewport =
     fss [ Height' screen_height
           Label' "_height_as_viewport" ]
@@ -91,6 +116,12 @@ let flex_hor_container_start =
           AlignItems.center
           Label' "_flex_hor_container_start" ]
 
+let flex_hor_container_spaceBetween =
+    fss [ Display.flex
+          JustifyContent.spaceBetween
+          AlignItems.center
+          Label' "_flex_hor_container_spaceBetween" ]
+
 let flex_ver_container_center =
     fss [ Display.flex
           FlexDirection.column
@@ -105,6 +136,10 @@ let flex_ver_container_start =
           AlignItems.center
           Label' "_flex_ver_container_start" ]
 
+let alignItems_center =
+    fss [ AlignItems.center
+          Label' "_alignItems_center" ]
+
 let alignItems_stretch =
     fss [ AlignItems.stretch
           Label' "_alignItems_stretch" ]
@@ -116,6 +151,10 @@ let alignItems_start =
 let justifyContent_center =
     fss [ JustifyContent.center
           Label' "_justifyContent_center" ]
+
+let justifyContent_spaceEvenly =
+    fss [ JustifyContent.spaceEvenly
+          Label' "_justifyContent_spaceEvenly" ]
 
 let flex_none =
     fss [ FlexGrow'(CssFloat 0.0)
@@ -173,6 +212,23 @@ let textAlign_center =
 let textAlign_start =
     fss [ TextAlign.start
           Label' "_textAlign_start" ]
+    
+let textAlign_inherit =
+    fss [ TextAlign.inherit'
+          Label' "_textAlign_inherit" ]
+
+let text_vertical =
+    fss [ Transforms [ Transform.rotate (deg -90.) ] ]
+
+let width_filled =
+    fss [
+        Width' fill_width
+        Label' "_width_filled"
+    ]
+
+let height_filles =
+    fss [ Height' fill_height
+          Label' "_height_filles" ]
 
 // base classes
 let ul_hor = fss [ Display.flex; Label' "_ul_hor" ]
@@ -240,22 +296,15 @@ let portrait =
     fss
     <| [ Width'(rem 12.0)
          Height'(rem 12.0)
-         Margin.auto
          Label' "_portrait" ]
-        @ padding_1 padding_portrait
 
-let portrait_card =
+let card =
     fss
     <| [ BackgroundColor' page_portrait_background_color
          BoxShadows [ BoxShadow.blurColor (px 0, px 0, em 1., page_portrait_shadow_color) ]
          Overflow.hidden
-         MinWidth'(rem 19.0)
-         MinHeight'(rem 18.0)
-         MaxWidth'(rem 20.0)
-         MaxHeight'(rem 40.0)
-         Label' "_portrait_card" ]
+         Label' "_card" ]
         @ border_solid_3 (px 1) page_separator_color (px 5)
-        @ padding_2 padding_portrait_card_hor padding_portrait_card_ver
 
 let portrait_section =
     fss
@@ -277,5 +326,21 @@ let separator_hor =
           BorderBottomWidth'(px 1)
           BorderBottomStyle.solid
           BorderBottomColor' page_separator_color
-          Width' fill_width
+          Width' sep_width
           Label' "_separator_hor" ]
+
+let h_blog_title =
+    fss [ FontSize' font_size_blog_title
+          Label' "_h_blog_title" ]
+
+let h_blog_subtitle =
+    fss [ FontSize' font_size_blog_subtitle
+          Label' "_h_blog_subtitle" ]
+
+let blog_title_blank_space_hor =
+    fss [ Height' blog_title_blank_space_height
+          Label' "_blog_title_blank_space_hor" ]
+
+let blog_subtitle_blank_space_hor =
+    fss [ Height' blog_subtitle_blank_space_height
+          Label' "_blog_subtitle_blank_space_hor" ]

@@ -8,6 +8,9 @@
     <Compile Include="Styles.fs" />
     <Compile Include="Home.fs" />
     <Compile Include="About.fs" />
+    <Compile Include="Projects.fs" />
+    <Compile Include="Blog.fs" />
+    <Compile Include="Contacts.fs" />
     <Compile Include="App.Domain.fs" />
     <Compile Include="Views.fs" />
     <Compile Include="App.fs" />

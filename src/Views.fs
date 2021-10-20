@@ -10,46 +10,36 @@ open App.utilities
 let siteTitle = "F.Rossi"
 Browser.Dom.document.title <- siteTitle
 
-let pages = [ "About", Some Page.About
-              "Projects", None
-              "Blog", None
-              "Contact", None ]
+let pages = [ "About", Page.About
+              "Projects", Page.Projects
+              "Blog", Page.Blog
+              "Contacts", Page.Contacts ]
 
 let headerView (model: Model) (dispatch: Msg -> unit) =
     header [ classes [ Styles.panel_theme
                        Styles.flex_none
                        Styles.padding_base ] ] [
         div [ classes [ Styles.paginated
-                        Styles.flex_hor_container_start ] ] [
+                        Styles.flex_hor_container_spaceBetween ] ] [
             a [ classes [ Styles.a_button
                           Styles.home_button ]
                 OnClick(fun _ -> dispatch (SwitchPage Page.Home))
             ] [
                 str siteTitle
             ]
-            ul [ classes [ Styles.ul_hor
-                           Styles.margin_big_left ] ] [
+            ul [ classes [ Styles.ul_hor ] ] [
 
-                for title, page' in pages do
-                    match page' with
-                    | Some page ->
-                        li [ classes [ Styles.li_hor
-                                       Styles.header_button_hover_transitions ] ] [
-                            a [ classes [ Styles.a_button
-                                          if model.CurrentPage = page then
-                                              Styles.a_button_selected ]
-                                if model.CurrentPage <> page then
-                                    OnClick(fun _ -> dispatch (SwitchPage page)) ] [
-                                str title
-                            ]
+                for title, page in pages do
+                    li [ classes [ Styles.li_hor
+                                   Styles.header_button_hover_transitions ] ] [
+                        a [ classes [ Styles.a_button
+                                      if model.CurrentPage = page then
+                                          Styles.a_button_selected ]
+                            if model.CurrentPage <> page then
+                                OnClick(fun _ -> dispatch (SwitchPage page)) ] [
+                            str title
                         ]
-                    | None ->
-                        li [ classes [ Styles.li_hor
-                                       Styles.header_button_hover_transitions ] ] [
-                            a [ Class Styles.a_button ] [
-                                str title
-                            ]
-                        ]
+                    ]
             ]
         ]
     ]
@@ -83,7 +73,9 @@ let baseView (model: Model) (dispatch: Msg -> unit) content =
                         Styles.minHeight_as_viewport ] ] [
             headerView model dispatch
             div [ classes [ Styles.paginated
-                            Styles.flex_auto ] ] [
+                            Styles.flex_auto
+                            Styles.flex_hor_container_center
+                            Styles.alignItems_stretch ] ] [
                 content
             ]
             footerView model dispatch
@@ -99,25 +91,14 @@ let homeView (model: Model) (dispatch: Msg -> unit) card =
                 card
                 <| ul [ classes [ Styles.ul_ver
                                   Styles.alignItems_start ] ] [
-                    for title, page' in pages do
-                        match page' with
-                        | Some page ->
-                            li [ classes [ Styles.li_ver
-                                           Styles.home_button_hover_transitions ] ] [
-                                a [ classes [ Styles.a_button ]
-                                    OnClick(fun _ -> dispatch (SwitchPage page)) ] [
-                                    str title
-                                ]
+                    for title, page in pages do
+                        li [ classes [ Styles.li_ver
+                                       Styles.home_button_hover_transitions ] ] [
+                            a [ classes [ Styles.a_button ]
+                                OnClick(fun _ -> dispatch (SwitchPage page)) ] [
+                                str title
                             ]
-
-                        | None ->
-                            li [ classes [ Styles.li_ver
-                                           Styles.home_button_hover_transitions ] ] [
-                                a [ classes [ Styles.a_button
-                                              ] ] [
-                                    str title
-                                ]
-                            ]
+                        ]
                    ]
             ]
         ]
