@@ -1,14 +1,7 @@
 module App
 
-(**
- The famous Increment/Decrement ported from Elm.
- You can find more info about Elmish architecture and samples at https://elmish.github.io/
-*)
-
 open Elmish
 open Elmish.React
-open Fable.React
-open Fable.React.Props
 
 open App.Domain
 
@@ -26,14 +19,6 @@ let update (msg: Msg) (model: Model) : Model =
     | ProjectsMsg projectsMsg ->
         let updateProjects = Projects.update projectsMsg model.Projects
         { model with Projects = updateProjects }
-    
-    | BlogMsg blogMsg ->
-        let updateBlog = Blog.update blogMsg model.Blog
-        { model with Blog = updateBlog }
-    
-    | ContactsMsg contactsMsg ->
-        let updateContacts = Contacts.update contactsMsg model.Contacts
-        { model with Contacts = updateContacts }
 
     | SwitchPage page -> { model with CurrentPage = page }
 
@@ -50,14 +35,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
         | Page.Projects ->
             Projects.view model.Projects (ProjectsMsg >> dispatch)
             |> Views.baseView model dispatch
-        | Page.Blog ->
-            Blog.view model.Blog (BlogMsg >> dispatch)
-            |> Views.baseView model dispatch
-        | Page.Contacts ->
-            Contacts.view model.Contacts (ContactsMsg >> dispatch)
-            |> Views.baseView model dispatch
         
-
 // App
 Program.mkSimple init update view
 |> Program.withReactSynchronous "elmish-app"

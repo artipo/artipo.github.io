@@ -1,6 +1,5 @@
 ﻿module App.utilities
 
-open Fable.React
 open Fable.React.Props
 open Fss
 

@@ -5,7 +5,6 @@ open Fss
 open Fss.FssTypes
 
 open App.utilities
-open Fss.Utilities
 
 // colors
 let page_background_color = rgb 238 238 238
@@ -72,7 +71,7 @@ let paginated =
     fss [ Width' fill_width
           MaxWidth' page_width
           Margin.auto
-          Overflow.hidden
+          Overflow.auto
           Label' "_paginated" ]
 
 let blogged =

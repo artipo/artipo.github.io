@@ -11,9 +11,7 @@ let siteTitle = "F.Rossi"
 Browser.Dom.document.title <- siteTitle
 
 let pages = [ "About", Page.About
-              "Projects", Page.Projects
-              "Blog", Page.Blog
-              "Contacts", Page.Contacts ]
+              "Projects", Page.Projects ]
 
 let headerView (model: Model) (dispatch: Msg -> unit) =
     header [ classes [ Styles.panel_theme

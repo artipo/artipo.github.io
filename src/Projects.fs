@@ -1,8 +1,6 @@
 ﻿[<RequireQualifiedAccess>]
 module Projects
 
-open Elmish
-open Elmish.React
 open Fable.React
 open Fable.React.Props
 
